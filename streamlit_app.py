@@ -53,6 +53,7 @@ def enhance_subtitles(subtitles, transcribed_words):
     return enhanced_subs
 
 
+
 def send_to_gpt4_for_improvement(subtitles):
     srt_text = '\n'.join([str(sub) for sub in subtitles])
     st.text_area("Subtitle analysis successful! (Step 2/3)", srt_text, height=300)
