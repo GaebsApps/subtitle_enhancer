@@ -6,7 +6,7 @@ import os
 import bisect
 
 # Streamlit app
-st.title("Subtitle Enhancer")
+st.title("💬 Subtitle Enhancer")
 
 # Input for OpenAI API Key
 api_key = st.text_input("Enter your OpenAI API key", type="password")
