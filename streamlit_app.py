@@ -134,7 +134,6 @@ st.markdown(
                 font-weight: 500;
                 font-size: calc(1.475rem + 3vw);
                 max-font-size: 3rem;
-                margin-top: 80px;
                 margin-bottom: 20px;
             }
     
