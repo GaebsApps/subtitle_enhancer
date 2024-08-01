@@ -58,7 +58,7 @@ def send_to_gpt4_for_improvement(subtitles):
     srt_text = '\n'.join([str(sub) for sub in subtitles])
     st.text_area("Subtitle analysis successful! (Step 2/3)", srt_text, height=300)
     response = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "Improve the grammatical quality of these srt subtitles without changing any of the timings and answer in the language of the original subtitles:"},
             {"role": "user", "content": srt_text}
@@ -116,6 +116,52 @@ if st.button("Enhance Subtitles"):
     elif not api_key:
         st.error("Please enter your OpenAI API key.")
 
+st.markdown("---")
+st.write("")
+
+st.header("How to use")
+st.write(
+    "Enhancing subtitles has never been easier, especially for Swiss German subtitles! The Subtitle Enhancer was created to handle the complexities of Swiss German, a task where most editing software falls short. However, it works seamlessly with all languages supported by GPT-4o and Whisper. Just follow these simple steps to get started and make your videos more accessible and professional."
+)
+st.write("""
+Before you start, please complete the following prerequisites:
+
+1. **Create an OpenAI Account and Generate an API Key:**
+   - Make sure you have an OpenAI account and generate an API key. For guidance, refer to this [article](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key).
+   - Add only a small amount of funds to your OpenAI account, as this app is experimental and lacks security measures.
+   - Please be advised that the creator acts in good faith; however, the creator disclaims any liability for the theft or misuse of the API key by others. By using this tool, you agree not to hold the creator liable for any claims, damages, or other liabilities. This tool is provided under the MIT License, which states:
+        - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   - You can view the source code by clicking on the GitHub icon in the menu.
+
+2. **Export Video or Speaker Track as MP3:**
+   - Export your video or its speaker track as an MP3 file.
+
+3. **Auto-Create Subtitles:**
+   - Use a software like Premiere Pro to auto-generate and export srt subtitles.
+   - Adjust the timings to your liking before using this tool for the best results.
+
+Steps to use the app:
+
+1. **Enter Your OpenAI API Key:**
+   - Input your OpenAI API key in the provided text box.
+
+2. **Upload Files:**
+   - Upload the MP3 file of your audio.
+   - Upload the corresponding SRT file for the subtitles.
+
+3. **Enhance Subtitles:**
+   - Click on the "Enhance Subtitles" button.
+   - The app will analyze and synchronize the subtitles with the audio.
+
+4. **Grammatical Improvement:**
+   - The synchronized subtitles are then sent to GPT-4o for grammatical enhancement.
+
+5. **Download the Enhanced Subtitles:**
+   - Once the process is complete, download the grammatically improved SRT file.
+
+6. **Import into Editing Software:**
+   - Import the enhanced SRT file back into your editing software and finish your project.
+""")
 
 # Custom CSS
 st.markdown(
@@ -123,11 +169,11 @@ st.markdown(
     <style>
             @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
             @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-    
+
             .appview-container {
                 animation: fadeInSlideUp 1s ease-in-out forwards;
             }
-            
+
             h1 {
                 font-family: "DM Serif Display", serif;
                 color: #000;
@@ -136,26 +182,36 @@ st.markdown(
                 margin-top: 30px;
                 margin-bottom: 20px;
             }
-    
+
+            h2{
+                font-family: "DM Serif Display", serif;
+                color: #000;
+                font-weight: 500;
+            }
+            
+            a {
+                color: rgb(255, 185, 80)!important;
+            }
+
             @media (min-width: 1320px) {
                 h1 {
                     font-size: 3rem;
                 }
             }
-    
+
             p {
                 font-family: "Inter", sans-serif;
             }
-    
+
             header{
             background: transparent!important;
             pointer-events: none; /* Allow clicks to pass through */
             }
-    
+
             header * {
             pointer-events: initial;
             }
-    
+
             #navbar {
                 position: fixed;
                 top: 0;
@@ -165,13 +221,13 @@ st.markdown(
                 background:white;
                 z-index: 100;
             }
-    
+
             #logocontainer {
                 max-width: 1320px;
                 margin: auto;
                 padding: 8px 20px 8px 20px;
             }
-    
+
             #logo {
                 box-shadow: none !important;
                 height: 55px;
@@ -179,17 +235,17 @@ st.markdown(
                 margin-top: .40625rem;
                 margin-bottom: .40625rem;
             }
-    
+
             .element-container div div:has(> img) {
                 width: 100%;
                 display: flex;
             }
-    
+
             .element-container div div img {
                 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
                 margin: auto;
             }
-            
+
             @keyframes fadeInSlideUp {
                 0% {
                     opacity: 0;
