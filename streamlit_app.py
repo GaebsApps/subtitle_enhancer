@@ -1,15 +1,19 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 import pysrt
 import tempfile
 import os
 import bisect
 
+openai = OpenAI
+
 # Streamlit app
 st.title("Subtitle Enhancer")
+st.markdown('<p style="color:red;">This app is still under development and may not work as intended.</p>', unsafe_allow_html=True)
 
 # Input for OpenAI API Key
 api_key = st.text_input("Enter your OpenAI API key", type="password")
+client = OpenAI(api_key=api_key)
 
 # Set up OpenAI client
 if api_key:
@@ -52,19 +56,19 @@ def enhance_subtitles(subtitles, transcribed_words):
 
     return enhanced_subs
 
-
+first_response = ""
 
 def send_to_gpt4_for_improvement(subtitles):
     srt_text = '\n'.join([str(sub) for sub in subtitles])
     st.text_area("Subtitle analysis successful! (Step 2/3)", srt_text, height=300)
-    response = openai.ChatCompletion.create(
-        model="gpt-4o",
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": "Improve the grammatical quality of these srt subtitles without changing any of the timings and answer in the language of the original subtitles:"},
+            {"role": "system", "content": "Improve the grammatical quality of these srt subtitles without changing any of the timings and answer in the language of the original subtitles. Some words ended up in the wrong cue. Move those words to the cue they belong in terms of content. Answer in the language of the original subtitles:"},
             {"role": "user", "content": srt_text}
         ]
     )
-    return response.choices[0].message['content']
+    return response.choices[0].message.content
 
 
 if st.button("Enhance Subtitles"):
@@ -73,14 +77,14 @@ if st.button("Enhance Subtitles"):
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp_mp3:
             tmp_mp3.write(uploaded_mp3.getvalue())
             tmp_mp3.flush()  # Ensure all data is written to the file
-            transcription = openai.Audio.transcribe(
+            transcription = client.audio.transcriptions.create(
                 model="whisper-1",
                 file=open(tmp_mp3.name, "rb"),
                 response_format="verbose_json",
                 timestamp_granularities=["word"]
             )
             transcription_data = transcription.words
-            st.text_area("Audio analysis successful! (Step 1/3)", transcription.words, height=300)
+            st.text_area("Audio analysis successful! (Step 1/3)", transcription_data, height=300)
 
         # Handle the SRT file
         with tempfile.NamedTemporaryFile(delete=False, suffix=".srt", mode='wb') as tmp_srt:
@@ -115,6 +119,8 @@ if st.button("Enhance Subtitles"):
             st.write("No subtitles were enhanced.")
     elif not api_key:
         st.error("Please enter your OpenAI API key.")
+
+
 
 st.markdown("---")
 st.write("")
