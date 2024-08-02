@@ -1,5 +1,7 @@
 # Subtitle Enhancer
 
+!!This app is still under development and may not work as intended!!
+
 This Streamlit app enhances subtitles by improving their grammatical quality and synchronizing them with audio transcriptions. It uses OpenAI's Whisper model for audio transcription and GPT-4 for grammatical enhancement, allowing you to upload both MP3 and SRT files, process them, and download the improved subtitles.
 
 ## Features
